@@ -22,15 +22,24 @@ class DistrictsController extends CI_Controller{
                
                 $pdfFilePath ="DistrictsList-".time().".pdf"; 
                 //actually, you can pass mPDF parameter on this load() function
-                $mpdf = new Mpdf(['mode' => 'ta-IN']);
-                 $mpdf->debug = true;                
-                $mpdf->WriteHTML($html,2);
+                //$mpdf = new Mpdf(['mode' => 'ta-IN']);
+                $this->load->library('Pdf');
+                
+                 //$mpdf->debug = true;                
+               // $mpdf->WriteHTML($html,2);
                 //offer it to user via browser download! (The PDF won't be saved on your server HDD)
                 
-                $mpdf->Output($pdfFilePath,"D");
+               // $mpdf->Output($pdfFilePath,"D");
+
+               $this->pdf->loadHtml($html);
+		$this->pdf->setPaper('A4', 'landscape');
+		$this->pdf->render();
+		// Output the generated PDF (1 = download and 0 = preview)
+		$this->pdf->stream("html_contents.pdf", array("Attachment"=> 0));	
                 exit;
        
     }
+    
 
     }
 
